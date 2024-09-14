@@ -1,0 +1,14 @@
+brainstorm UI
+>> cli app, select stock or all stocks, select period, select strategy
+>> web app doing same as above
+>> web app that can accept code
+
+
+
+brainstorm Pinbar
+>> i want to know upto what extent min/max pinbar next day goes down
+>> i wat to know probability gor each 0.1% slab
+>> i want to be able to this for all stocks and individual for desired time range
+>> i want a dashboard like view as well as detailed date wise view 
+>> should only need modify files under script folder to change strategy
+>> ability to download analysis csv/excel format for later analysis
