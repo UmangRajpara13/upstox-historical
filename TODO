@@ -12,3 +12,9 @@ brainstorm Pinbar
 >> i want a dashboard like view as well as detailed date wise view 
 >> should only need modify files under script folder to change strategy
 >> ability to download analysis csv/excel format for later analysis
+
+
+brainstorm fetch
+>> what if i fetch all the frequently needed data and save-in memory
+    - it will result in faster access of data
+    - reduce number of server calls

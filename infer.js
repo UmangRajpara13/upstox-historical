@@ -43,7 +43,7 @@ function readXlsxFile(filePath) {
     }
 
     console.log(`
-        (Negatives) ---- ${slab_negatives.length} ---- ${slab_negatives.length / jsonData.length}\n
+        (Negatives) ---- ${slab_negatives.length} ---- ${(slab_negatives.length / jsonData.length).toFixed(2)}\n
         (0) ---- ${slab_0.length} ---- ${(slab_0.length / jsonData.length).toFixed(2)}\n
         (0 to 0.5) ---- ${slab_0_0p5.length} ---- ${(slab_0_0p5.length / jsonData.length).toFixed(2)}\n
         (0.5 to 1) ---- ${slab_0p5_1.length} ---- ${(slab_0p5_1.length / jsonData.length).toFixed(2)}\n
@@ -58,7 +58,9 @@ function readXlsxFile(filePath) {
 // const filePath = 'Analysis/data_TO_10Cr.xlsx';
 // const filePath = 'Analysis/data_TO_5Cr.xlsx';
 // const filePath = 'Analysis/data_TO_1Cr.xlsx';
-const filePath = 'Analysis/Hammer10D_TO_1Cr.xlsx';
+// const filePath = 'Analysis/Hammer10D_TO_1Cr_newToLogic_kDays.xlsx';
+const filePath = 'Analysis/Hammer10D_1Cr_newToLogic_kDays_LessHigh.xlsx';
+// const filePath = 'Analysis/Hammer10D_1Cr_newToLogic_kDays_LessHigh_Less400.xlsx';
 
 // Call the function to read the file
 readXlsxFile(filePath);

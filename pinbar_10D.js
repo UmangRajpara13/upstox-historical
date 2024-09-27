@@ -39,10 +39,10 @@ async function main() {
     }
 
 
-    all_nse_stocks = [{
-        instrument_key: 'NSE_EQ|INE879I01012',
-        tradingsymbol: 'AADHARHFC',
-    }]
+    // all_nse_stocks = [{
+    //     instrument_key: 'NSE_EQ|INE879I01012',
+    //     tradingsymbol: 'AADHARHFC',
+    // }]
 
 
     for (let i = 0; i < all_nse_stocks.length; i++) {

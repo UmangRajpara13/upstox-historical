@@ -12,13 +12,16 @@ const low_upto = []
 const workbook = new ExcelJS.Workbook();
 const worksheet = workbook.addWorksheet('My Sheet');
 
-const filePath = 'Analysis/trial.xlsx'
+const filePath = 'Analysis/Hammer10D_1Cr_newToLogic_kDays_LessHigh_RED.xlsx'
 
 worksheet.columns = [
-    { header: 'Name', key: 'name', width: 30 },
-    { header: 'Date', key: 'date', width: 30 },
-    { header: 'Close To Next High %', key: 'closeToNhigh', width: 30 },
-    { header: 'Close To Next Close %', key: 'closeToNclose', width: 30 }
+    { header: 'Name', key: 'name', width: 18 },
+    { header: 'Date', key: 'date', width: 18 },
+    { header: 'Close To Next High %', key: 'closeToNhigh', width: 15 },
+    { header: 'Close To Kth High %', key: 'closeToKhigh', width: 15 },
+    { header: 'K no. of days', key: 'kDays', width: 15 },
+    { header: 'Date of +ve ROI', key: 'kDate', width: 15 },
+    { header: '', key: 'noValue', width: 10 }
 
 ];
 
@@ -41,8 +44,8 @@ async function main() {
 
 
     // all_nse_stocks = [{
-    //     instrument_key: 'NSE_EQ|INE879I01012',
-    //     tradingsymbol: 'DBREALTY',
+    //     instrument_key: 'NSE_EQ|INE09EO01013',
+    //     tradingsymbol: 'AARTISURF',
     // }]
 
 
@@ -65,11 +68,10 @@ async function main() {
                 // console.log(response.data.data.candles);
                 const all_days = response.data.data.candles
 
-
-
                 console.log(`\n ${stock.tradingsymbol}`)
 
                 const Lows_of_10days = []
+                const X_Days = 10
 
                 for (let j = all_days.length - 1; j > 1; j--) {
 
@@ -89,6 +91,10 @@ async function main() {
                     const nClose = nextDay[4]
 
 
+                    // if (open > 300) {
+                    //     continue;
+                    // }
+
                     Lows_of_10days.length < 10 && Lows_of_10days.push(low)
                     // console.log(Lows_of_10days)
 
@@ -102,36 +108,58 @@ async function main() {
 
 
                         if (low <= Lowest_of_10days && volume * close > 10000000)
-                            if (close > center_value && open > center_value) {
+
+                            if (close < open && close > center_value
+                                && open > center_value && high < all_days[j + 1][2]) {
+
                                 console.log(count++, ')', date.getDate(),
                                     months[date.getMonth()], date.getFullYear(),
                                     '~~   ', (((nHigh - close) / close) * 100).toFixed(2))
-                                // console.log(open, high, low, close)
-                                // if (nOpen > 1.01 * close && nOpen < high) {
-                                //     console.log(count++, ')', date.getDate(), months[date.getMonth()], date.getFullYear())
-                                //     console.log(`   ${((nOpen - nLow) / nOpen) * 100}`)
-                                //     worksheet.addRow({
-                                //         name: stock.tradingsymbol,
-                                //         date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
-                                //         openToLow: (((nOpen - nLow) / nOpen) * 100).toFixed(2),
-                                //         openToClose: (((nOpen - nClose) / nOpen) * 100).toFixed(2)
-                                //     });
-                                //     // low_upto.push(((nOpen - nLow) / nOpen) * 100)
-                                // }
 
-                                worksheet.addRow({
-                                    name: stock.tradingsymbol,
-                                    date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
-                                    closeToNhigh: (((nHigh - close) / close) * 100).toFixed(2),
-                                    closeToNclose: (((nClose - close) / close) * 100).toFixed(2),
-                                });
+                                if (((nHigh - close) / close) * 100 >= 1) {
+                                    worksheet.addRow({
+                                        name: stock.tradingsymbol,
+                                        date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
+                                        closeToNhigh: Number((((nHigh - close) / close) * 100)).toFixed(2),
+                                        closeToKhigh: 0,
+                                        kDays: 0,
+                                        kDate: `--`,
+                                        noValue: ``,
+                                    });
+                                }
+                                else {
+                                    for (let k = j - 2; k > 1; k--) {
+                                        const kDay = all_days[k]
+                                        const kDate = new Date(kDay[0])
+                                        const kOpen = kDay[1]
+                                        const kHigh = kDay[2]
+                                        const kLow = kDay[3]
+                                        const kClose = kDay[4]
+
+                                        // console.log(kHigh, (kHigh - close) / close)
+                                        if (((kHigh - close) / close) * 100 >= 1) {
+                                            // console.log('j', j, 'k', k)
+                                            worksheet.addRow({
+                                                name: stock.tradingsymbol,
+                                                date: `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`,
+                                                closeToNhigh: Number((((nHigh - close) / close) * 100)).toFixed(2),
+                                                closeToKhigh: Number((((kHigh - close) / close) * 100)).toFixed(2),
+                                                kDays: (j - 1) - k, // -1 is correct here!
+                                                kDate: `${kDate.getDate()} ${months[kDate.getMonth()]} ${kDate.getFullYear()}`,
+                                                noValue: ``,
+                                            });
+                                            break;
+                                        } else {
+                                            continue
+                                        }
+                                    }
+                                }
                             }
                     }
                 }
             })
             .catch(error => {
                 console.error(error)
-                // console.error(`Error: ${error.response.status} - ${error.response.data} `);
             });
     }
     await workbook.xlsx.writeFile(filePath);
