@@ -1,20 +1,23 @@
-brainstorm UI
+UI
 >> cli app, select stock or all stocks, select period, select strategy
 >> web app doing same as above
 >> web app that can accept code
 
 
 
-brainstorm Pinbar
->> i want to know upto what extent min/max pinbar next day goes down
+Pinbar
 >> i wat to know probability gor each 0.1% slab
->> i want to be able to this for all stocks and individual for desired time range
 >> i want a dashboard like view as well as detailed date wise view 
 >> should only need modify files under script folder to change strategy
 >> ability to download analysis csv/excel format for later analysis
 
 
-brainstorm fetch
+fetch
 >> what if i fetch all the frequently needed data and save-in memory
     - it will result in faster access of data
     - reduce number of server calls
+
+
+WEAK BEAR
+> obtain probablity of stocks falling next day after advancing(>2% say) with less than avg. volume
+> obtain probablity of next day rise/gap-up of rise with more than avg. volume
