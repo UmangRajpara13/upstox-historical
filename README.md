@@ -1,29 +1,28 @@
-
-# Backtest NSE historical data using Upstox API
+# Backtest NSE historical data using Upstox API 📊💻
 
 ## Overview
 
-Hammer.js is a Node.js script that fetches historical stock market data for all NSE-listed stocks over the past year, detects hammer candlestick patterns formed at the 30-day low, and logs the relevant details into an Excel sheet. This tool aims to assist in developing and refining trading setups.
+Hammer.js is a Node.js script that fetches historical stock market data for all NSE-listed stocks over the past year, detects hammer candlestick patterns formed at the 30-day low, and logs the relevant details into an Excel sheet. This tool aims to assist in developing and refining trading setups. 📈📉
 
-While Hammer.js serves as an example implementation, users are encouraged to modify the script to detect other candlestick patterns and devise their own trading strategies.
+While Hammer.js serves as an example implementation, users are encouraged to modify the script to detect other candlestick patterns and devise their own trading strategies. 💡
 
-## Features
+## Features ✨
 
 - Fetches historical daily candlestick data for one year for all NSE stocks.
-- Identifies hammer candlestick patterns formed at the 30-day low.
+- Identifies hammer candlestick patterns formed at the 30-day low. 📍
 - Logs the following details into an Excel sheet:
-  - Date of the hammer candlestick formation.
-  - Instrument name.
-  - Additional columns for analysis to support trading strategies.
+  - 📅 Date of the hammer candlestick formation.
+  - 🏷️ Instrument name.
+  - 📊 Additional columns for analysis to support trading strategies.
 
-## Requirements
+## Requirements 🛠️
 
 To use Hammer.js, ensure you have the following installed:
 
-- Node.js (v14 or higher)
-- npm (Node Package Manager)
+- Node.js (v14 or higher) 🖥️
+- npm (Node Package Manager) 📦
 
-## Installation
+## Installation 🚀
 
 1. Clone the repository:
 
@@ -52,10 +51,10 @@ To use Hammer.js, ensure you have the following installed:
    ACCESS_TOKEN=xx.yy.zz
    ```
 
-   - Replace `CLIENT_ID`, `API_KEY`, and `SECRET_KEY` with your credentials.
-   - The `ACCESS_TOKEN` will be updated automatically by the script.
+   - Replace `CLIENT_ID`, `API_KEY`, and `SECRET_KEY` with your credentials. 🔑
+   - The `ACCESS_TOKEN` will be updated automatically by the script. 🔄
 
-## Usage
+## Usage ⚙️
 
 1. Run the script:
 
@@ -65,38 +64,38 @@ To use Hammer.js, ensure you have the following installed:
 
 2. The script will:
 
-   - Fetch one year of historical data for all NSE stocks.
-   - Analyze the data to detect hammer candlestick patterns.
-   - Logs the results into an Excel file in the \<project-root\>/logs/\<today's date\> folder
+   - Fetch one year of historical data for all NSE stocks. 📂
+   - Analyze the data to detect hammer candlestick patterns. 🕯️
+   - Logs the results into an Excel file in the `<project-root>/logs/<today's date>` folder 📋
 
-## Output
+## Output 📜
 
-The Excel sheet includes(but not limited to):
+The Excel sheet includes (but not limited to):
 
-- **Date**: The date the hammer candlestick pattern with 30 Day Low was formed.
-- **Instrument Name**: The name of the stock.
+- **Date**: 📅 The date the hammer candlestick pattern with 30 Day Low was formed.
+- **Instrument Name**: 🏷️ The name of the stock.
 - **Additional Columns**: Fields for analysis, such as:
-  - Opening % for same stock next day.
-  - Percentage change from the previous day.
-  - Any other metrics deemed useful for creating trading setups.
+  - 📊 Opening % for the same stock next day.
+  - 📈 Percentage change from the previous day.
+  - 📉 Any other metrics deemed useful for creating trading setups.
 
-## Customization
+## Customization 🛠️
 
 You can modify the following parameters in the script:
 
-- **Data source**: Change the API endpoint or data-fetching mechanism.
-- **Pattern criteria**: Adjust the logic for detecting hammer candles or defining the 30-day low.
-- **Output format**: Customize the structure of the Excel file or add more columns.
+- **Data source**: Change the API endpoint or data-fetching mechanism. 🌐
+- **Pattern criteria**: Adjust the logic for detecting hammer candles or defining the 30-day low. 🕵️‍♂️
+- **Output format**: Customize the structure of the Excel file or add more columns. 🧩
 
 Additionally, users can extend the script to:
-- Detect other candlestick patterns (e.g., engulfing, doji, or shooting star).
-- Incorporate new metrics or filters based on trading strategies.
+- Detect other candlestick patterns (e.g., engulfing, doji, or shooting star). 🌠
+- Incorporate new metrics or filters based on trading strategies. 📊
 
-## Contributing
+## Contributing 🤝
 
 Contributions are welcome! To contribute:
 
-1. Fork the repository.
+1. Fork the repository. 🍴
 2. Create a new branch:
    ```bash
    git checkout -b feature-name
@@ -109,17 +108,18 @@ Contributions are welcome! To contribute:
    ```bash
    git push origin feature-name
    ```
-5. Open a pull request.
+5. Open a pull request. 📨
 
-## License
+## License 📜
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-## Acknowledgments
+## Acknowledgments 🙏
 
-- NSE for stock market data.
-- Open-source libraries used in the project.
+- A BIG shout-out to UPSTOX team for providing historical candle data for FREE.
+- All Open-source libraries used in the project.
 
-## Disclaimer
+## Disclaimer ⚠️
 
 This project is for educational and informational purposes only. Use at your own risk, and always conduct your own research before making trading decisions.
+
