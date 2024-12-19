@@ -54,7 +54,7 @@ worksheet.views = [
 ];
 
 
-const filePath = path.join('Results', date, `Hammer_100cr_30D_${hours}h-${minutes}m-${seconds}s.xlsx`)
+const filePath = path.join('Results', date, `Hammer_10cr_30D_${hours}h-${minutes}m-${seconds}s.xlsx`)
 
 worksheet.columns = [
     { header: 'Name', key: 'name', width: 18 },
