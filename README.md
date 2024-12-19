@@ -2,18 +2,13 @@
 
 ## Overview
 
-Hammer.js is a Node.js script that fetches historical stock market data for all NSE-listed stocks over the past year, detects hammer candlestick patterns formed at the 30-day low, and logs the relevant details into an Excel sheet. This tool aims to assist in developing and refining trading setups. 📈📉
+This project aims to give real time entry/exit signals for trading setups during market hours. Currently, it helps in testing and formulating trading setups by testing it on historical stock market data.
 
 While Hammer.js serves as an example implementation, users are encouraged to modify the script to detect other candlestick patterns and devise their own trading strategies. 💡
 
-## Features ✨
+## Current Implementation 📈📉
 
-- Fetches historical daily candlestick data for one year for all NSE stocks.
-- Identifies hammer candlestick patterns formed at the 30-day low. 📍
-- Logs the following details into an Excel sheet:
-  - 📅 Date of the hammer candlestick formation.
-  - 🏷️ Instrument name.
-  - 📊 Additional columns for analysis to support trading strategies.
+Identifying hammer candlestick patterns formed at the 30-day low. In the project root I have implemented a Node.js script(Hammer.js) that fetches historical stock market data for all NSE-listed stocks over the past year, detects hammer candlestick patterns formed at the 30-day low, and logs the relevant details into an Excel sheet. 
 
 ## Requirements 🛠️
 
@@ -42,7 +37,7 @@ To use Hammer.js, ensure you have the following installed:
    npm install
    ```
 
-4. Create a `.env` file in the root directory with the following keys:
+<!-- 4. Create a `.env` file in the root directory with the following keys:
 
    ```env
    CLIENT_ID=abc123
@@ -52,7 +47,7 @@ To use Hammer.js, ensure you have the following installed:
    ```
 
    - Replace `CLIENT_ID`, `API_KEY`, and `SECRET_KEY` with your credentials. 🔑
-   - The `ACCESS_TOKEN` will be updated automatically by the script. 🔄
+   - The `ACCESS_TOKEN` will be updated automatically by the script. 🔄 -->
 
 ## Usage ⚙️
 
@@ -66,7 +61,7 @@ To use Hammer.js, ensure you have the following installed:
 
    - Fetch one year of historical data for all NSE stocks. 📂
    - Analyze the data to detect hammer candlestick patterns. 🕯️
-   - Logs the results into an Excel file in the `<project-root>/logs/<today's date>` folder 📋
+   - Logs the results into an Excel file in the `<project-root>/Results/<today's date>` folder 📋
 
 ## Output 📜
 

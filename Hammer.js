@@ -27,14 +27,14 @@ const date = `${year}-${month}-${day}`
 
 const init_strategy_file_folders = async () => {
     try {
-        // Create logs directory synchronously
-        fs.mkdirSync(path.join(process.cwd(), 'logs'), { recursive: true });
-        console.log(`Directory './logs' created or already exists.`);
+        // Create Results directory synchronously
+        fs.mkdirSync(path.join(process.cwd(), 'Results'), { recursive: true });
+        console.log(`Directory './Results' created or already exists.`);
 
-        // Create today's directory inside logs synchronously
-        fs.mkdirSync(path.join(process.cwd(), 'logs', date), { recursive: true });
+        // Create today's directory inside Results synchronously
+        fs.mkdirSync(path.join(process.cwd(), 'Results', date), { recursive: true });
 
-        console.log(`Directory './logs/${date}' created or already exists.`);
+        console.log(`Directory './Results/${date}' created or already exists.`);
 
     } catch (err) {
         console.error(`Error creating directory: ${err.message}`);
@@ -54,7 +54,7 @@ worksheet.views = [
 ];
 
 
-const filePath = path.join('logs', date, `Hammer_100cr_30D_${hours}h-${minutes}m-${seconds}s.xlsx`)
+const filePath = path.join('Results', date, `Hammer_100cr_30D_${hours}h-${minutes}m-${seconds}s.xlsx`)
 
 worksheet.columns = [
     { header: 'Name', key: 'name', width: 18 },
