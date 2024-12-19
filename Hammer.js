@@ -104,8 +104,8 @@ async function main() {
         const stock = all_nse_stocks[i];
         const instrument_key = stock.instrument_key
         const interval = "day" // day | 1minute 
-        const to_date = "2024-12-11" // YYYY-MM-DD
-        const from_date = "2024-10-11" // YYYY-MM-DD
+        const to_date = "2024-12-18" // YYYY-MM-DD
+        const from_date = "2023-12-18" // YYYY-MM-DD
 
         const url = `https://api.upstox.com/v2/historical-candle/${instrument_key}/${interval}/${to_date}/${from_date}`
         const headers = {
@@ -114,8 +114,8 @@ async function main() {
         try {
             const response = await axios.get(url, { headers })
 
-            if (response.data.status === 'success') {  // latest day is 1st in array!
-                const all_days = response.data.data.candles
+            if (response.data.status === 'success') {
+                const all_days = response.data.data.candles  // latest day is 1st in array!
 
                 console.log(`\n ${stock.tradingsymbol}`)
 
@@ -156,7 +156,7 @@ async function main() {
 
                         Lows_of_X_Days.shift()
 
-                        if (low <= Lowest_of_X_Days && volume * close > 1000000000)
+                        if (low <= Lowest_of_X_Days && volume * close > 100000000)
 
                             if (close > center_value && open > center_value
                                 && high < all_days[j + 1][2]) { // check if hammer high is < prev. day's high
