@@ -2,13 +2,13 @@
 
 ## Overview
 
-This project aims to give real time entry/exit signals for trading setups during market hours. Currently, it helps in testing and formulating trading setups by testing it on historical stock market data.
+This project helps in testing and formulating trading setups by testing trading setups on historical stock market data. It aims to give real time entry/exit signals for trading setups during market hours in the future.
 
 While Hammer.js serves as an example implementation, users are encouraged to modify the script to detect other candlestick patterns and devise their own trading strategies. 💡
 
 ## Current Implementation 📈📉
 
-Identifying hammer candlestick patterns formed at the 30-day low. In the project root I have implemented a Node.js script(Hammer.js) that fetches historical stock market data for all NSE-listed stocks over the past year, detects hammer candlestick patterns formed at the 30-day low, and logs the relevant details into an Excel sheet. 
+Identifying hammer candlestick patterns formed at the 30-day low. In the project root I have implemented a Node.js script "Hammer.js" that fetches historical stock market data for all NSE-listed stocks over the past year, detects hammer candlestick patterns formed at the 30-day low, and logs the relevant details into an Excel sheet. 
 
 ## Requirements 🛠️
 
