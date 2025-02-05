@@ -8,3 +8,4 @@ overview.txt
 package-lock.json
 *.~lock.*
 /Analysis/
+/Results/
