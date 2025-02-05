@@ -53,24 +53,25 @@ worksheet.views = [
     { state: 'frozen', xSplit: 1, ySplit: 1 }
 ];
 
+const filePath = path.join('Results', date, `Hammer_${hours}h-${minutes}m-${seconds}s.xlsx`)
 
-const filePath = path.join('logs', date, `Hammer_100cr_30D_${hours}h-${minutes}m-${seconds}s.xlsx`)
+// 
 
 worksheet.columns = [
-    { header: 'Name', key: 'name', width: 18 },
     { header: 'Date', key: 'date', width: 18 },
-    { header: 'Hammer Color', key: 'hammerColor', width: 5 },
-    { header: 'Opens At (%)', key: 'opensAt', width: 15 },
-    { header: 'High At (%)', key: 'closeToHigh', width: 15 },
-    { header: 'Low wrt to prv low(%)', key: 'lowToLow', width: 15 },
-    { header: 'Closes At (%)', key: 'closesAt', width: 15 },
-    { header: '1% or close', key: 'one_percent_or_close', width: 15 },
-    { header: 'T-P-1 Opens at', key: 't_p_1_opens_at', width: 15 },
-    { header: 'T-P-1 Low at', key: 't_p_1_low_at', width: 15 },
-    { header: 'Kth High %', key: 'closeToKhigh', width: 15 },
-    { header: 'K no. of days', key: 'kDays', width: 15 },
-    { header: 'Date of +ve ROI', key: 'kDate', width: 15 },
-    { header: 'Day', key: 'day', width: 15 }
+    { header: 'Name', key: 'name', width: 18 },
+    { header: 'Turnover', key: 'turnover', width: 18 },
+    { header: 'Candle Color', key: 'candleColor', width: 5 },
+    { header: 'Close Price (Entry) (Rs.)', key: 'closeAt', width: 15 },
+    { header: 'NextDay Close Price (Exit) (Rs.)', key: 't_close_at', width: 15 },
+    { header: 'ROI (%)', key: 'roi', width: 15 },
+    { header: 'Investment', key: 'investment', width: 15 },
+    { header: 'Gross P/L', key: 'grossPNL', width: 15 },
+    { header: 'Charges and Taxes(~25%)', key: 'c_n_t', width: 15 },
+    { header: 'DP Charges(~ Rs. 16)', key: 'dp_charge', width: 15 },
+    { header: 'Net P/L', key: 'netPNL', width: 15 },
+    { header: 'Win/Lose', key: 'win_lose', width: 15 },
+    { header: 'Avg. Investment per year', key: 'avg_investment', width: 15 },
 ];
 
 const handleExit = async () => {
@@ -104,8 +105,8 @@ async function main() {
         const stock = all_nse_stocks[i];
         const instrument_key = stock.instrument_key
         const interval = "day" // day | 1minute 
-        const to_date = "2024-12-11" // YYYY-MM-DD
-        const from_date = "2024-10-11" // YYYY-MM-DD
+        const to_date = "2025-01-13" // YYYY-MM-DD
+        const from_date = "2023-01-01" // YYYY-MM-DD
 
         const url = `https://api.upstox.com/v2/historical-candle/${instrument_key}/${interval}/${to_date}/${from_date}`
         const headers = {
@@ -156,7 +157,9 @@ async function main() {
 
                         Lows_of_X_Days.shift()
 
-                        if (low <= Lowest_of_X_Days && volume * close > 1000000000)
+                        if (low <= Lowest_of_X_Days
+                            && volume * close > 1000000000
+                        )
 
                             if (close > center_value && open > center_value
                                 && high < all_days[j + 1][2]) { // check if hammer high is < prev. day's high
@@ -165,58 +168,29 @@ async function main() {
                                     shortMonthNames[date.getMonth()], date.getFullYear(),
                                     '~~   ', (((t_high - close) / close) * 100).toFixed(2))
 
-                                if (((t_high - close) / close) * 100 >= 1) { // target 1% achieved same day
-                                    worksheet.addRow({
-                                        name: stock.tradingsymbol,
-                                        date: `${date.getDate()} ${shortMonthNames[date.getMonth()]} ${date.getFullYear()}`,
-                                        hammerColor: close > open ? 'G' : 'R',
-                                        opensAt: Math.round((((t_open - close) / close) * 100) * 100) / 100,
-                                        closeToHigh: Math.round((((t_high - close) / close) * 100) * 100) / 100,
-                                        lowToLow: Math.round((((t_low - low) / low) * 100) * 100) / 100,
-                                        closesAt: Math.round((((t_close - close) / close) * 100) * 100) / 100,
-                                        one_percent_or_close: 0,
-                                        t_p_1_opens_at: Math.round((((t_p_1_open - close) / close) * 100) * 100) / 100,
-                                        t_p_1_low_at: Math.round((((t_p_1_low - close) / close) * 100) * 100) / 100,
-                                        closeToKhigh: 0,
-                                        kDays: 0,
-                                        kDate: `--`,
-                                        day: days[date.getDay()]
-                                    });
-                                }
-                                else {
-                                    for (let k = j - 2; k > 1; k--) {
-                                        const kDay = all_days[k]
-                                        const kDate = new Date(kDay[0])
-                                        const kOpen = kDay[1]
-                                        const kHigh = kDay[2]
-                                        const kLow = kDay[3]
-                                        const kClose = kDay[4]
+                                const ROI = Math.round((((t_close - close) / close) * 100) * 100) / 100
+                                const investment = 10000
+                                const gross_pnl = investment * ROI / 100
+                                const charges = Math.abs(investment * ROI * 0.25 / 100)
+                                const net_pnl = gross_pnl - charges - 16 // (dp charge = 16)
+                                worksheet.addRow({
+                                    date: `${date.getDate()} ${shortMonthNames[date.getMonth()]} ${date.getFullYear()}`,
+                                    day: days[date.getDay()],
+                                    name: stock.tradingsymbol,
+                                    turnover: close * volume,
+                                    candleColor: close > open ? 'G' : 'R',
+                                    closeAt: close,
+                                    t_close_at: t_close,
+                                    roi: ROI,
+                                    investment: investment,
+                                    grossPNL: gross_pnl,
+                                    c_n_t: charges,
+                                    dp_charge: 16,
+                                    netPNL: net_pnl,
+                                    win_lose: net_pnl > 0 ? 'Win' : 'Lose',
+                                    avg_investment: investment * count / 365,
+                                });
 
-                                        // console.log(kHigh, (kHigh - close) / close)
-                                        if (((kHigh - close) / close) * 100 >= 1) {
-                                            // console.log('j', j, 'k', k)
-                                            worksheet.addRow({
-                                                name: stock.tradingsymbol,
-                                                date: `${date.getDate()} ${shortMonthNames[date.getMonth()]} ${date.getFullYear()}`,
-                                                hammerColor: close > open ? 'G' : 'R',
-                                                opensAt: Math.round((((t_open - close) / close) * 100) * 100) / 100,
-                                                closeToHigh: Math.round((((t_high - close) / close) * 100) * 100) / 100,
-                                                lowToLow: Math.round((((t_low - low) / low) * 100) * 100) / 100,
-                                                closesAt: Math.round((((t_close - close) / close) * 100) * 100) / 100,
-                                                one_percent_or_close: Math.round((((t_close - close) / close) * 100) * 100) / 100,
-                                                t_p_1_opens_at: Math.round((((t_p_1_open - close) / close) * 100) * 100) / 100,
-                                                t_p_1_low_at: Math.round((((t_p_1_low - close) / close) * 100) * 100) / 100,
-                                                closeToKhigh: Math.round((((kHigh - close) / close) * 100) * 100) / 100,
-                                                kDays: (j - 1) - k, // -1 is correct here!
-                                                kDate: `${kDate.getDate()} ${shortMonthNames[kDate.getMonth()]} ${kDate.getFullYear()}`,
-                                                day: days[date.getDay()]
-                                            });
-                                            break;
-                                        } else {
-                                            continue;
-                                        }
-                                    }
-                                }
                             }
                     }
                 }
@@ -226,7 +200,7 @@ async function main() {
             }
 
         } catch (error) {
-            console.error(error)
+            console.error(error.status, error.statusText, stock.tradingsymbol)
         }
 
         await new Promise(resolve => setTimeout(resolve, 250));
