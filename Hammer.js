@@ -158,7 +158,7 @@ async function main() {
                         Lows_of_X_Days.shift()
 
                         if (low <= Lowest_of_X_Days
-                            && volume * close > 1000000000
+                            && volume * close > 100000000
                         )
 
                             if (close > center_value && open > center_value

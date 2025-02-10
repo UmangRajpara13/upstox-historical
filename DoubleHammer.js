@@ -44,6 +44,7 @@ const init_strategy_file_folders = async () => {
 
 init_strategy_file_folders();
 
+
 const workbook = new ExcelJS.Workbook();
 const worksheet = workbook.addWorksheet('My Sheet');
 
@@ -53,13 +54,13 @@ worksheet.views = [
 ];
 
 
-const filePath = path.join('Results', date, `HammerEngulf 1Week_30D_10cr_${hours}h-${minutes}m-${seconds}s.xlsx`)
+const filePath = path.join('Results', date, `DoubleHammer_30D_10cr_${hours}h-${minutes}m-${seconds}s.xlsx`)
 
 worksheet.columns = [
     { header: 'Name', key: 'name', width: 18 },
     { header: 'Date', key: 'date', width: 18 },
     // { header: 'Hammer Color', key: 'hammerColor', width: 5 },
-    { header: 'Turnover', key: 'turnover', width: 18 },
+        { header: 'Turnover', key: 'turnover', width: 18 },
 
     { header: 'Opens At (%)', key: 'opensAt', width: 15 },
     { header: 'High At (%)', key: 'closeToHigh', width: 15 },
@@ -104,9 +105,9 @@ async function main() {
 
         const stock = all_nse_stocks[i];
         const instrument_key = stock.instrument_key
-        const interval = "week" // 1minute, 30minute, day, week, month 
-        const to_date = "2025-01-31" // YYYY-MM-DD
-        const from_date = "2015-01-31" // YYYY-MM-DD
+        const interval = "day" // day | 1minute 
+        const to_date = "2024-12-18" // YYYY-MM-DD
+        const from_date = "2022-12-18" // YYYY-MM-DD
 
         const url = `https://api.upstox.com/v2/historical-candle/${instrument_key}/${interval}/${to_date}/${from_date}`
         const headers = {
@@ -121,11 +122,11 @@ async function main() {
                 console.log(`\n ${stock.tradingsymbol}`)
 
                 const Lows_of_X_Days = []
-                const X_Days = 20
+                const X_Days = 30
 
                 for (let j = all_days.length - 1; j > 1; j--) {
 
-                    const day = all_days[j]; // Hammer Day
+                    const day = all_days[j]; // 1st Hammer Day
                     const date = new Date(day[0])
                     const open = day[1]
                     const high = day[2]
@@ -141,11 +142,13 @@ async function main() {
                     // it wont filter out hammer at X_Days
                     if (j <= all_days.length - (X_Days + 1)) {
                         //  the latest days' candle data is at top of the array.
-                        const t_day = all_days[j - 1] // Engulf Day
+                        const t_day = all_days[j - 1] // 2nd Hammer Day
                         const t_open = t_day[1]
                         const t_high = t_day[2]
                         const t_low = t_day[3]
                         const t_close = t_day[4]
+                        const t_center_value = (t_high - t_low) / 2 + t_low
+
 
                         const t_p_1_day = all_days[j - 2] // Trading Day
                         const t_p_1_open = t_p_1_day[1]
@@ -158,20 +161,19 @@ async function main() {
                         Lows_of_X_Days.shift()
 
                         if (low <= Lowest_of_X_Days // finding the low over X_Days 
-                            && volume * close > 100000000 // Turnover for liquidity
+                            && volume * close > 100000000 // 10Cr. Turnover for liquidity
                             && close > center_value // criteria for hammer
                             && open > center_value // criteria for hammer
                             && high < all_days[j + 1][2] // check if hammer high is < prev. day's high
-                            && t_open < open // Engulf
-                            && t_open < close // Engulf
-                            && t_close > open // Engulf
-                            && t_close > close // Engulf
+                            && t_open > t_center_value // hammer
+                            && t_close > t_center_value // hammer
                         ) {
 
 
                             console.log(count++, ')', date.getDate(),
                                 shortMonthNames[date.getMonth()], date.getFullYear(),
                                 '~~   ', (((t_p_1_high - t_close) / t_close) * 100).toFixed(2), days[date.getDay()])
+
                             const row = {
                                 name: stock.tradingsymbol,
                                 date: `${date.getDate()} ${shortMonthNames[date.getMonth()]} ${date.getFullYear()}`,
@@ -209,6 +211,7 @@ async function main() {
                                         // console.log('j', j, 'k', k)
                                         worksheet.addRow({
                                             ...row,
+                                            one_percent_or_close: Math.round((((t_p_1_close - t_close) / t_close) * 100) * 100) / 100,
                                             closeToKhigh: Math.round((((kHigh - t_close) / t_close) * 100) * 100) / 100,
                                             kDays: (j - 1) - k, // -1 is correct here!
                                             kDate: `${kDate.getDate()} ${shortMonthNames[kDate.getMonth()]} ${kDate.getFullYear()}`,
@@ -231,6 +234,7 @@ async function main() {
         } catch (error) {
             console.error(error)
         }
+
         await new Promise(resolve => setTimeout(resolve, 250));
     }
     handleExit()
